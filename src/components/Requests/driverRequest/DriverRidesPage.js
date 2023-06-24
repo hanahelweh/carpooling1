@@ -27,7 +27,7 @@ const DriverRidesPage = () => {
       rides.map((ride) => (
         <div key={ride._id} className="card mb-3">
           <div className="card-body">
-            <p className="card-text">Date: {ride.rideDate}</p>
+            <p className="card-text">Date: {ride.rideDate.split("T")[0]}</p>
             <p className="card-text">Time: {ride.rideTime}</p>
             <p className="card-text">From: {ride.FromLocation.cities}</p>
             <p className="card-text">To: {ride.ToLocation.cities}</p>

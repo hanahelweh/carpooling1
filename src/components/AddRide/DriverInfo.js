@@ -301,7 +301,7 @@ const DriverInfo = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-secondary">
           Add Driver Info
         </button>
       </form>

@@ -21,7 +21,6 @@ const driverRequestsReducer = (state = initialState, action) => {
         ...state,
         Drequests: action.payload.map((Drequest) => ({
           ...Drequest,
-          status: "",
         })),
         error: null,
       };
@@ -63,7 +62,16 @@ const driverRequestsReducer = (state = initialState, action) => {
         return {
           ...state,
           Drequests: updatedRequests,
-        };      
+        };
+        case "UPDATE_PASSENGER_RIDE_SUCCESS":
+          const updatedRide = action.payload;
+          const updatedPassengerRides = state.Drequests.map((Drequest) =>
+            Drequest._id === updatedRide._id ? updatedRide : Drequest
+          );
+          return {
+            ...state,
+            Drequests: updatedPassengerRides,
+          };             
     default:
       return state;
   }

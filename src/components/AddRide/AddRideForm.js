@@ -145,7 +145,7 @@ const AddRideForm = () => {
         </small>
       </div>
 
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-secondary">
         Add Ride
       </button>
     </form>

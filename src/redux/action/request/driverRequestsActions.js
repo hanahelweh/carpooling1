@@ -144,3 +144,27 @@ export const deleteRequestForRide = (userId, rideId) => {
       });
   };
 };
+
+// Update passenger ride status
+export const updatePassengerRideStatus = (rideId, userId, status) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.patch(`http://localhost:3000/api/updatePassengerRides/${rideId}/${userId}`, {
+        status
+      });
+
+      // Handle the response data
+      const updatedPassengerRide = response.data;
+      console.log(updatedPassengerRide);
+
+      // Dispatch the action with the updated passenger ride data
+      dispatch({
+        type: "UPDATE_PASSENGER_RIDE_SUCCESS",
+        payload: updatedPassengerRide
+      });
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  };
+};

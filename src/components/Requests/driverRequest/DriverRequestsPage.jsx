@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllPassengerForRide,
-  acceptRequest,
-  declineRequest,
   getRequestStatus,
+  updatePassengerRideStatus,
 } from "../../../redux/action/request/driverRequestsActions";
 import Button from "react-bootstrap/Button";
 import { useParams } from "react-router-dom";
@@ -13,27 +12,7 @@ const DriverRequestsPage = () => {
   const Drequests = useSelector((state) => state.driverRequests.Drequests);
   const dispatch = useDispatch();
   const { rideId } = useParams();
-
-  const handleAccept = async (userId) => {
-    try {
-      await dispatch(acceptRequest(userId));
-      console.log("Accept button clicked");
-    } catch (error) {
-      console.error("Error accepting request:", error);
-    }
-  };
-
-  const handleDecline = async (userId) => {
-    try {
-      await dispatch(declineRequest(userId));
-      console.log("Decline button clicked");
-    } catch (error) {
-      console.error("Error declining request:", error);
-    }
-  };
-
   useEffect(() => {
-    console.log("rideId:", rideId);
     if (rideId) {
       dispatch(getAllPassengerForRide(rideId));
     }
@@ -45,7 +24,18 @@ const DriverRequestsPage = () => {
       dispatch(getRequestStatus(request.user._id));
     });
   }, [dispatch, Drequests]);
-
+  
+  const handleUpdateStatus = async (rideId, userId, status) => {
+    try {
+      await dispatch(updatePassengerRideStatus(rideId, userId, status));
+      dispatch(getAllPassengerForRide(rideId));
+    } catch (error) {
+      console.error("Error updating passenger ride status:", error);
+    }
+  };
+  useEffect(() => {
+    console.log(Drequests); // Display Drequests in the console
+  }, [Drequests]);
   return (
     <div className="container mt-4">
       <h1>All Requests</h1>
@@ -68,31 +58,33 @@ const DriverRequestsPage = () => {
               <p className="card-text">
                 <strong>Location:</strong> {Drequest.user.location}
               </p>
-              {Drequest.status === "Approved" ? (
-                <p className="card-text">Status: Approved</p>
-              ) : Drequest.status === "Rejected" ? (
-                <p className="card-text">Status: Rejected</p>
-              ) : (
+              {Drequest.status === "Pending" ? (
                 <div>
                   <Button
                     variant="success"
-                    onClick={() => handleAccept(Drequest.user._id)}
+                    onClick={() =>
+                      handleUpdateStatus(Drequest.ride._id, Drequest.user._id, "Approved")
+                    }
                   >
                     Accept
                   </Button>
 
                   <Button
                     variant="danger"
-                    onClick={() => handleDecline(Drequest.user._id)}
+                    onClick={() =>
+                      handleUpdateStatus(Drequest.ride._id, Drequest.user._id, "Rejected")
+                    }
                   >
                     Decline
                   </Button>
                 </div>
+              ) : (
+                <p className="card-footer">Status: {Drequest.status}</p>
               )}
             </div>
           </div>
-      )))
-      : (
+        ))
+      ) : (
         <h5 className="pt-3">No requests available</h5>
       )}
     </div>

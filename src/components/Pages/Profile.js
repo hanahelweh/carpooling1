@@ -211,7 +211,7 @@ const Profile = () => {
                     }}
                   />
                 </div>
-                <button className="btn btn-primary" onClick={handleSaveClick}>
+                <button className="btn btn-secondary" onClick={handleSaveClick}>
                   Save
                 </button>
               </>
@@ -244,7 +244,7 @@ const Profile = () => {
                 <p className="card-text">
                   <strong>Location:</strong> {user.location}
                 </p>
-                <button className="btn btn-primary" onClick={handleEditClick}>
+                <button className="btn btn-secondary" onClick={handleEditClick}>
                   Edit
                 </button>
               </>
